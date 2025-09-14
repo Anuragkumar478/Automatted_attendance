@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // your backend base URL
+  baseURL: "https://automatted-attendance-backend.onrender.com", // your backend base URL
 });
  api.interceptors.request.use((req)=>{
   const token=localStorage.getItem("token");
