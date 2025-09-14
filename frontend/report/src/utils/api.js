@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://automatted-attendance-backend.onrender.com",
+  baseURL: "https://automatted-attendance-backend.onrender.com/api",
 });
 
 api.interceptors.request.use((req) => {
