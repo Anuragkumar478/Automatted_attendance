@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title><%= student.name %> | Profile</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f2ef;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+    }
+    .profile-header img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #0a66c2;
+    }
+    .profile-header div {
+      margin-left: 20px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #0a66c2;
+    }
+    p.subtitle {
+      font-size: 16px;
+      color: #666;
+    }
+    section {
+      margin-top: 30px;
+    }
+    h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+      color: #333;
+    }
+    ul, table {
+      margin-top: 10px;
+      width: 100%;
+    }
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-header">
+      <% if (student.profilePic) { %>
+        <img src="<%= student.profilePic %>" alt="Profile Picture">
+      <% } %>
+      <div>
+        <h1><%= student.name %></h1>
+        <p class="subtitle"><strong>Roll Number:</strong> <%= student.rollNumber %><br>
+        <strong>Email:</strong> <%= student.email %></p>
+      </div>
+    </div>
+
+    <section>
+      <h2>Attendance</h2>
+      <ul>
+        <% attendance.forEach(item => { %>
+          <li><%= item.date.toISOString().split('T')[0] %> - <%= item.status %></li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Marks</h2>
+      <table>
+        <tr>
+          <th>Subject</th>
+          <th>Test Marks</th>
+          <th>External Marks</th>
+        </tr>
+        <% marks.forEach(mark => { %>
+          <tr>
+            <td><%= mark.subject %></td>
+            <td><%= mark.classTestMarks %></td>
+            <td><%= mark.externalMarks %></td>
+          </tr>
+        <% }) %>
+      </table>
+    </section>
+
+    <section>
+      <h2>Lab Visits</h2>
+      <ul>
+        <% labVisits.forEach(lab => { %>
+          <li><%= lab.date.toISOString().split('T')[0] %> - <%= lab.labName %></li>
+        <% }) %>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <ul>
+        <% projects.forEach(p => { %>
+          <li><strong><%= p.title %></strong> - <%= p.submissionDate.toISOString().split('T')[0] %> - <a href="<%= p.link %>" target="_blank"><%= p.link %></a></li>
+        <% }) %>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
