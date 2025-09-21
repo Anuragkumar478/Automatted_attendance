@@ -1,33 +1,34 @@
 import { useState } from "react";
 import API from "../utils/api"; // axios instance
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
     role: "student", // default role
   });
 
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();;
     try {
-      const res = await API.post("/auth/login", form);
-
-      // save token + user in localStorage
-      localStorage.setItem("token", res.data.token);
+      const res = await API.post("/auth/login", form,
+        { withCredentials: true }
+      );
+      if (res.data.user.id) {
+        console.log(res.data.user.id);
+        navigate("/");
+      }
       localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      alert("✅ Login successful!");
-      console.log("User Data:", res.data.user);
-
-      // if using react-router-dom navigation
-      // navigate(res.data.user.role === "teacher" ? "/teacher-dashboard" : "/student-dashboard");
     } catch (err) {
       alert(err.response?.data?.msg || "❌ Login failed");
+
     }
   };
 

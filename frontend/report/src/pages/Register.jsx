@@ -73,7 +73,7 @@ const Register = () => {
       if (profilePic) formData.append("profilePic", profilePic);
 
       const res = await API.post("/auth/register/student", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        // headers: { "Content-Type": "multipart/form-data" },
       });
 
       alert("✅ Student registered successfully!");

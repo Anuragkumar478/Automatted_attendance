@@ -29,7 +29,9 @@ const teacherRegister = () => {
     };
 
     try {
-      const res = await API.post("/auth/register/teacher", payload);
+      const res = await API.post("/auth/register/teacher", payload,{
+        withCredentials:true,
+      });
       alert("✅ Teacher registered successfully!");
       localStorage.setItem("token", res.data.token);
       setForm({ name: "", email: "", password: "", department: "", subjects: "" });
