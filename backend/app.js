@@ -25,6 +25,12 @@ const allowedOrigins = [
   'https://your-frontend-domain.onrender.com',
 ];
 
+app.get('/cors-check', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.send('CORS headers set');
+});
+
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, false); // allow tools like Postman
