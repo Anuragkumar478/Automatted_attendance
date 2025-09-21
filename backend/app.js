@@ -24,6 +24,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://your-frontend-domain.onrender.com',
 ];
+// fghf
 
 app.get('/cors-check', (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '');
