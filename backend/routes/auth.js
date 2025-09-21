@@ -15,7 +15,7 @@ const upload = multer({ storage });
 router.post('/register/student', upload.single('profilePic'), authController.registerStudent);
 
 router.post('/register/teacher', authController.registerTeacher);
-router.post('/login', authController.login);
+router.post('/login' , authController.login);
 router.get('/', auth, authController.getCurrentUser);
 
 module.exports = router;

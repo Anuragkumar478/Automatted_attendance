@@ -5,7 +5,7 @@ const projectController = require('../controllers/projects');
 
 router.post('/', auth, projectController.addProject);
 router.put('/:id/evaluate', auth, projectController.evaluateProject);
-router.put('/',projectController.getProject);
+router.get('/',projectController.getProject);
 // ✅ Fetch all projects
 
 

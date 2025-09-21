@@ -9,22 +9,47 @@ const Attendance = require('./models/Attendance');
 const Marks = require('./models/Marks');
 const LabVisit = require('./models/LabVisit');
 const Project = require('./models/Projects');
+const cookieParser = require("cookie-parser");
 
-
-// Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
 const connectDB = require('./config/db');
 connectDB();
 
-
-// Initialize Express
 const app = express();
 
-// Middleware
+// ----------- CORS Setup -----------
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://your-frontend-domain.onrender.com',
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, false); // allow tools like Postman
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+app.use(cookieParser());
+// Handle preflight requests globally
+// app.options("*", cors({
+//   origin: function(origin, callback) {
+//     if (!origin) return callback(null, false);
+//     if (allowedOrigins.includes(origin)) return callback(null, origin);
+//     return callback(new Error("Not allowed by CORS"));
+//   },
+//   credentials: true
+// }));
+
+// -----------------------------------
+
+// Body parser
 app.use(express.json());
-app.use(cors());
 
 // File uploads
 const upload = multer({
@@ -34,33 +59,23 @@ const upload = multer({
   })
 });
 
-
-// Static files
+// Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// ---------------- Routes ----------------
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/students', require('./routes/student'));
 app.use('/api/attendance', require('./routes/attendance'));
 app.use('/api/marks', require('./routes/marks'));
 app.use('/api/labs', require('./routes/lab'));
 app.use('/api/projects', require('./routes/project'));
-app.use('/api/subjects',require('./routes/subject'));
-app.use("/api/qr-attendance", require("./routes/qrAttendance"));
+app.use('/api/subjects', require('./routes/subject'));
+app.use('/api/qr-attendance', require('./routes/qrAttendance'));
 
-
-// Error handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Server error');
-
-});
-
-// Set up EJS for student summary
+// ---------------- EJS ----------------
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Generate HTML summary
 app.get('/api/students/:id/summary/html', async (req, res) => {
   try {
     const studentId = req.params.id;
@@ -78,9 +93,15 @@ app.get('/api/students/:id/summary/html', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-app.get('/', (req,res)=>{
-  res.send('app is running ')
-})
+
+// Health check
+app.get('/', (req, res) => res.send('App is running'));
+
+// Error handling (must be last)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Server error');
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;

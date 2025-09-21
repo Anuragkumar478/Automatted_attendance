@@ -9,7 +9,7 @@ const fs = require('fs');
 // Get all students
 exports.getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find().select('-password');
+    const students = await Student.find();
     res.json(students);
   } catch (err) {
     console.error(err.message);

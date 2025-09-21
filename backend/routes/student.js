@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Routes
-router.get('/', auth, studentController.getAllStudents);
+router.get('/',auth, studentController.getAllStudents);
 router.get('/filter', auth, getStudentsByYearAndDepartment); // ✅ added filter route
 router.get('/:id', auth, studentController.getStudentById);
 router.put('/:id', auth, studentController.updateStudent);
