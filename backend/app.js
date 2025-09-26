@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -21,7 +21,8 @@ const app = express();
 
 // ----------- CORS Setup -----------
 const allowedOrigins = [
-  'https://your-frontend-domain.onrender.com',
+  'http://localhost:3000',
+  'https://your-frontend-domain.onrender.com' ,
 ];
 
 // fghf
@@ -33,29 +34,29 @@ app.get('/cors-check', (req, res) => {
   res.send('CORS headers set');
 });
 
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin) return callback(null, false); // allow tools like Postman
-//     if (allowedOrigins.includes(origin)) return callback(null, true);
-//     return callback(new Error('Not allowed by CORS'));
-//   },
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"],
-// }));
-app.use(cors());
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, false); // allow tools like Postman
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+// app.use(cors());
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   next();
+// });
 app.use(cookieParser());
 // Handle preflight requests globally
 // app.options("*", cors({
